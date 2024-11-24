@@ -17,6 +17,3 @@ app.include_router(orderRouter)
 app.include_router(productRouter)
 
 
-@app.get('/')
-async def root():
-    return {"message": "Bu asosiy sahifa"}
