@@ -15,15 +15,6 @@ authRouter = APIRouter(
 )
 
 
-@authRouter.get("/")
-async def welcome(Authorize: AuthJWT = Depends()):
-    try:
-        Authorize.jwt_required()
-    except Exception as e:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
-    return {"message": "Bu auth route signup sahifasi"}
-
-
 @authRouter.post("/signup", status_code=status.HTTP_201_CREATED)
 async def signup(user: SignUpModel):
     db_email = session.query(User).filter(User.email == user.email).first()

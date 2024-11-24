@@ -14,18 +14,6 @@ orderRouter = APIRouter(
 )
 
 
-@orderRouter.get("/")
-async def welcome_page(Authorize: AuthJWT = Depends()):
-    try:
-        Authorize.jwt_required()
-    except Exception as e:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Enter valid access token")
-
-    return {
-        "message": "Bu order route sahifasi"
-    }
-
-
 @orderRouter.post("/make", status_code=status.HTTP_201_CREATED)
 async def make_order(order: OrderModel, Authorize: AuthJWT = Depends()):
     try:
@@ -255,10 +243,8 @@ async def order_status_edit(id: int, order_status: OrderStatusModel, Authorize: 
 
     current_user = Authorize.get_jwt_subject()
     user = session.query(User).filter(User.username == current_user).first()
-    print(user, '+++++++')
 
     order = session.query(Order).filter(Order.id == id).first()
-    print(order, "++++++++")
 
     if order.user != user:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"{id} li ma'lumotni o'zgartira olmaysiz!")
